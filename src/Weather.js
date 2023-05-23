@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Weather.css';
-import FormattedDate from './FormattedDate';
+
+import WeatherInfo from './WeatherInfo';
 import axios from 'axios';
 
 export default function Weather(props) {
@@ -19,6 +20,7 @@ export default function Weather(props) {
       icon: response.data.weather[0].icon,
       wind: response.data.wind.speed,
       city: response.data.name,
+      feelsLike: response.data.main.feels_like,
     });
      setReady(true);
   }
@@ -32,7 +34,8 @@ export default function Weather(props) {
   function search() {
 let apiKey = 'b400ae3b711a616262d18b0ca2cbe78f';
 let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-axios.get(apiUrl).then(displayWeather);
+    axios.get(apiUrl).then(displayWeather);
+    console.log(apiUrl);
   }
 
   
@@ -65,30 +68,8 @@ axios.get(apiUrl).then(displayWeather);
             </div>
           </div>
         </form>
-        <h1>{weatherData.city }</h1>
-        <ul>
-          <li>
-            <FormattedDate date={weatherData.date} />
-          </li>
-          <li>Scattered clouds</li>
-        </ul>
-        <div className="row mt-3">
-          <div className="col-6">
-            <img
-              src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
-              alt="weather-icon"
-            />{' '}
-            <span className="temperature">21</span>
-            <span className="unit">°C</span>
-          </div>
-          <div className="col-6">
-            <ul>
-              <li>Precipitation : 61%</li>
-              <li>Humidity: 61%</li>
-              <li>Wind: 21 km/h</li>
-            </ul>
-          </div>
-        </div>
+        <WeatherInfo data={ weatherData } />
+        
       </div>
     );
   } else {
